@@ -10,7 +10,7 @@ import org.virtushawk.activemq.service.sender.PubSubSender;
 public class PubSubReceiverTwo {
     private static final Logger LOGGER = LogManager.getLogger(PubSubReceiverTwo.class);
 
-    @JmsListener(destination = PubSubSender.PUB_SUB_DESTINATION, containerFactory = "durableJmsListenerContainerFactory")
+    @JmsListener(destination = PubSubSender.PUB_SUB_DESTINATION, containerFactory = "durableTopicJmsListenerContainerFactory")
     public void receiveMessage(String message) {
         LOGGER.info("{} received message: {}", PubSubReceiverTwo.class, message);
     }

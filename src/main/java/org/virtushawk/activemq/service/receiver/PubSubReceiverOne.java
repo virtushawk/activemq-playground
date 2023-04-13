@@ -11,7 +11,7 @@ public class PubSubReceiverOne {
 
     private static final Logger LOGGER = LogManager.getLogger(PubSubReceiverOne.class);
 
-    @JmsListener(destination = PubSubSender.PUB_SUB_DESTINATION, containerFactory = "jmsListenerContainerFactory")
+    @JmsListener(destination = PubSubSender.PUB_SUB_DESTINATION, containerFactory = "topicJmsListenerContainerFactory")
     public void receiveMessage(String message) {
         LOGGER.info("{} received message: {}", PubSubReceiverOne.class, message);
     }

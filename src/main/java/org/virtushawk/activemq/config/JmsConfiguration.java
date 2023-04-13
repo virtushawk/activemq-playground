@@ -7,6 +7,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
+import org.springframework.jms.support.converter.MessageConverter;
+import org.springframework.jms.support.converter.MessageType;
 
 import java.util.List;
 
@@ -30,7 +33,7 @@ public class JmsConfiguration {
     }
 
     @Bean
-    public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() {
+    public DefaultJmsListenerContainerFactory topicJmsListenerContainerFactory() {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setConnectionFactory(activeMQConnectionFactory());
         factory.setPubSubDomain(true);
@@ -38,12 +41,20 @@ public class JmsConfiguration {
     }
 
     @Bean
-    public DefaultJmsListenerContainerFactory durableJmsListenerContainerFactory() {
+    public DefaultJmsListenerContainerFactory durableTopicJmsListenerContainerFactory() {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setConnectionFactory(activeMQConnectionFactory());
         factory.setSubscriptionDurable(true);
         factory.setClientId("durableClientId");
         factory.setPubSubDomain(true);
+        return factory;
+    }
+
+    @Bean
+    public DefaultJmsListenerContainerFactory queueJmsListenerContainerFactory() {
+        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+        factory.setConnectionFactory(activeMQConnectionFactory());
+        factory.setMessageConverter(jacksonJmsMessageConverter());
         return factory;
     }
 
@@ -59,6 +70,14 @@ public class JmsConfiguration {
     public JmsTemplate queueTemplate() {
         JmsTemplate jmsTemplate = new JmsTemplate();
         jmsTemplate.setConnectionFactory(activeMQConnectionFactory());
+        jmsTemplate.setMessageConverter(jacksonJmsMessageConverter());
         return jmsTemplate;
+    }
+    @Bean
+    public MessageConverter jacksonJmsMessageConverter() {
+        MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
+        converter.setTargetType(MessageType.TEXT);
+        converter.setTypeIdPropertyName("_type");
+        return converter;
     }
 }
