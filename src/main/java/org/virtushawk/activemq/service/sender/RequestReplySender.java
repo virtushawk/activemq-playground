@@ -14,13 +14,12 @@ import javax.jms.Message;
 @Service
 public class RequestReplySender {
 
-    private static final Logger logger = LogManager.getLogger(RequestReplySender.class);
+    private static final Logger LOGGER = LogManager.getLogger(RequestReplySender.class);
 
     public static final String REQUEST_REPLY_QUEUE = "request-reply-queue";
 
     private final JmsTemplate jmsTemplate;
     private final MessageConverter messageConverter;
-
 
     public RequestReplySender(@Qualifier(value = "queueTemplate") JmsTemplate jmsTemplate,
                               MessageConverter messageConverter) {
@@ -32,6 +31,6 @@ public class RequestReplySender {
         Message response = jmsTemplate.sendAndReceive(REQUEST_REPLY_QUEUE,
                 session -> messageConverter.toMessage(message, session));
 
-        logger.info("Sent: {} and received: {}", message, messageConverter.fromMessage(response));
+        LOGGER.info("Sent: {} and received: {}", message, messageConverter.fromMessage(response));
     }
 }

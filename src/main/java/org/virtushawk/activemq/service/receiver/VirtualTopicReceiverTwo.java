@@ -4,17 +4,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Controller;
-import org.virtushawk.activemq.service.sender.RequestReplySender;
 
 @Controller
-public class RequestReplyReceiver {
+public class VirtualTopicReceiverTwo {
 
-    private static final Logger LOGGER = LogManager.getLogger(RequestReplyReceiver.class);
+    private static final Logger LOGGER = LogManager.getLogger(VirtualTopicReceiverTwo.class);
 
-    @JmsListener(destination = RequestReplySender.REQUEST_REPLY_QUEUE,
+    @JmsListener(destination = "Consumer.virtual.VirtualTopic.SimpleTopic",
             containerFactory = "queueJmsListenerContainerFactory")
-    public String receive(String message) {
+    public void receiveMessage(String message) {
         LOGGER.info("Received: {}", message);
-        return "Hello from " + RequestReplyReceiver.class;
     }
 }
