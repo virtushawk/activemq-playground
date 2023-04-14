@@ -30,8 +30,8 @@ public class JmsConfiguration {
 
     @Bean
     public ConnectionFactory activeMQConnectionFactory() {
-     ActiveMQConnectionFactory activeMQConnectionFactory = new ActiveMQConnectionFactory(username, password, brokerURL);
-     activeMQConnectionFactory.setTrustedPackages(List.of("org.virtushawk.activemq"));
+        ActiveMQConnectionFactory activeMQConnectionFactory = new ActiveMQConnectionFactory(username, password, brokerURL);
+        activeMQConnectionFactory.setTrustedPackages(List.of("org.virtushawk.activemq"));
 
         SingleConnectionFactory singleConnectionFactory = new SingleConnectionFactory(activeMQConnectionFactory);
         singleConnectionFactory.setReconnectOnException(true);
@@ -82,6 +82,7 @@ public class JmsConfiguration {
         jmsTemplate.setMessageConverter(jacksonJmsMessageConverter());
         return jmsTemplate;
     }
+    
     @Bean
     public MessageConverter jacksonJmsMessageConverter() {
         MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
